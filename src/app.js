@@ -1,0 +1,28 @@
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+import candidateRoutes from "./routes/candidate.routes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(cors({
+  origin: "https://admin-frontend-zoy4.vercel.app",
+  credentials: true
+}));
+/* ================= SERVE UPLOADS (CRITICAL) ================= */
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "..", "uploads"))
+);
+
+/* ================= ROUTES ================= */
+app.use("/api/candidates", candidateRoutes);
+
+export default app;
